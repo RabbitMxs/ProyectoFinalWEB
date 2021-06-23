@@ -1,9 +1,9 @@
 <template>
-	<div>
-			<router-link :to="link">
-			<v-icon x-large>{{ image }}</v-icon>
+	<div style="height: auto;">
+		<router-link :to="link" tag="h4" class="font-weight-regular">
+			<v-icon class="icon">{{ image }}</v-icon>
+			<div>{{ texto }}</div>
 		</router-link>
-		<div class="text-decoration-none">{{ texto }}</div>
 	</div>
 </template>
 
@@ -18,4 +18,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.icon {
+	font-size: 90px;
+}
+</style>

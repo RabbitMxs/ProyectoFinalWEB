@@ -56,7 +56,7 @@ export default {
 <style scoped>
 .wrapper {
 	display: grid;
-	grid-template-columns: 200px 1fr;
+	grid-template-columns: 200px 1fr 1fr;
 	grid-gap: 10px;
 	grid-auto-rows: minmax(auto, auto);
 }

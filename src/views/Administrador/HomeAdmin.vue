@@ -16,55 +16,63 @@
 					</v-col>
 				</v-row>
 				<v-row class="mt-5" cols="12" align="center" no-gutters justify="center">
-					<v-col cols="12" sm="3" align="center" no-gutters justify="center">
-						<BtnReporte
-							class="iconApp"
-							texto="Usuarios"
-							link="usuario"
-							image="mdi-account-group"
-							tag="button"
-							width="100%"
-						/>
-						<BtnReporte
-							class="iconApp"
-							texto="Departamentos"
-							link="departamento"
-							image="mdi-bank"
-							tag="button"
-							width="100%"
-						/>
-						<BtnReporte
-							class="iconApp"
-							texto="Tipo de Usuarios"
-							link="tipoUsuario"
-							image="mdi-book-account"
-							tag="button"
-							width="100%"
-						/>
-						<BtnReporte
-							class="iconApp"
-							texto="Tipos de Pruebas"
-							link="tipoPrueba"
-							image="mdi-test-tube"
-							tag="button"
-							width="100%"
-						/>
-						<BtnReporte
-							class="iconApp"
-							texto="Medicamentos"
-							link="medicamento"
-							image="mdi-pill"
-							tag="button"
-							width="100%"
-						/>
-						<BtnReporte
-							class="iconApp"
-							texto="Preguntas"
-							link="pregunta"
-							image="mdi-clipboard-list"
-							tag="button"
-							width="100%"
-						/>
+					<v-col align="center" no-gutters justify="center">
+						<v-container style="width: 100%">
+							<v-row class="mb-10">
+								<BtnReporte
+									class="iconApp"
+									texto="Usuarios"
+									link="usuario"
+									image="mdi-account-group"
+									tag="button"
+									width="100%"
+								/>
+								<BtnReporte
+									class="iconApp"
+									texto="Departamentos"
+									link="departamento"
+									image="mdi-bank"
+									tag="button"
+									width="100%"
+								/>
+							</v-row>
+							<v-row class="mb-10">
+								<BtnReporte
+									class="iconApp"
+									texto="Tipo de Usuarios"
+									link="tipoUsuario"
+									image="mdi-book-account"
+									tag="button"
+									width="100%"
+								/>
+								<BtnReporte
+									class="iconApp"
+									texto="Tipos de Pruebas"
+									link="tipoPrueba"
+									image="mdi-test-tube"
+									tag="button"
+									width="100%"
+								/>
+							</v-row>
+							<v-row class="mb-10">
+								<BtnReporte
+									class="iconApp"
+									texto="Medicamentos"
+									link="medicamento"
+									image="mdi-pill"
+									tag="button"
+									width="100%"
+								/>
+								<BtnReporte
+									class="iconApp"
+									texto="Preguntas"
+									link="pregunta"
+									image="mdi-clipboard-list"
+									tag="button"
+									width="100%"
+								/>
+							</v-row>
+						</v-container>
 					</v-col>
 				</v-row>
 			</v-container>

@@ -1,5 +1,16 @@
 <template>
-	<v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+	<v-data-table
+		:headers="headers"
+		:items="desserts"
+		sort-by="carreradepto"
+		:footer-props="{
+			showFirstLastPage: true,
+			firstIcon: 'mdi-arrow-collapse-left',
+			lastIcon: 'mdi-arrow-collapse-right',
+			prevIcon: 'mdi-minus',
+			nextIcon: 'mdi-plus',
+		}"
+	>
 		<template v-slot:top>
 			<v-toolbar flat>
 				<v-spacer></v-spacer>
@@ -43,7 +54,7 @@
 				<v-dialog v-model="dialogDelete" max-width="550px">
 					<v-card>
 						<v-card-title class="text-h5"
-							>Estas seguro de eliminar el Departamento?</v-card-title
+							>Estas seguro de eliminar el departamento?</v-card-title
 						>
 						<v-card-actions>
 							<v-spacer></v-spacer>
@@ -81,7 +92,7 @@ export default {
 			{
 				text: 'ID',
 				align: 'start',
-				sortable: false,
+				sortable: true,
 				value: 'id',
 				class: 'black--text',
 			},
@@ -134,19 +145,15 @@ export default {
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
-
 		deleteItem(item) {
-			this.deleteDepto(item.id);
 			this.editedIndex = this.desserts.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialogDelete = true;
 		},
-
 		deleteItemConfirm() {
 			this.desserts.splice(this.editedIndex, 1);
-			this.closeDelete();
+			this.deleteDepto(this.editedItem.id);
 		},
-
 		close() {
 			this.dialog = false;
 			this.$nextTick(() => {
@@ -154,7 +161,6 @@ export default {
 				this.editedIndex = -1;
 			});
 		},
-
 		closeDelete() {
 			this.dialogDelete = false;
 			this.$nextTick(() => {
@@ -171,6 +177,7 @@ export default {
 						carreradepto: this.editedItem.carreradepto,
 					}),
 				});
+				this.initialize();
 			} catch (error) {
 				console.log(error);
 			}
@@ -196,6 +203,7 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
+			this.closeDelete();
 		},
 		save() {
 			if (this.editedIndex > -1) {

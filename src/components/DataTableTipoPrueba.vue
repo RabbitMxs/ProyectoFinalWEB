@@ -1,5 +1,16 @@
 <template>
-	<v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+	<v-data-table
+		:headers="headers"
+		:items="desserts"
+		sort-by="tipoprueba"
+		:footer-props="{
+			showFirstLastPage: true,
+			firstIcon: 'mdi-arrow-collapse-left',
+			lastIcon: 'mdi-arrow-collapse-right',
+			prevIcon: 'mdi-minus',
+			nextIcon: 'mdi-plus',
+		}"
+	>
 		<template v-slot:top>
 			<v-toolbar flat>
 				<v-spacer></v-spacer>
@@ -19,7 +30,10 @@
 							<v-container>
 								<v-row>
 									<v-col cols="12" sm="6" md="12">
-										<v-text-field v-model="editedItem.tipoprueba" label="Tipo de Prueba"></v-text-field>
+										<v-text-field
+											v-model="editedItem.tipoprueba"
+											label="Tipo de Prueba"
+										></v-text-field>
 									</v-col>
 								</v-row>
 							</v-container>
@@ -39,7 +53,9 @@
 
 				<v-dialog v-model="dialogDelete" max-width="550px">
 					<v-card>
-						<v-card-title class="text-h5">Estas seguro de eliminar el tipo de prueba?</v-card-title>
+						<v-card-title class="text-h5"
+							>Estas seguro de eliminar el tipo de prueba?</v-card-title
+						>
 						<v-card-actions>
 							<v-spacer></v-spacer>
 							<v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -48,10 +64,9 @@
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
-
 			</v-toolbar>
 		</template>
-    
+
 		<template v-slot:item.actions="{ item }">
 			<v-icon small class="mr-2" @click="editItem(item)">
 				mdi-pencil
@@ -77,7 +92,7 @@ export default {
 			{
 				text: 'ID',
 				align: 'start',
-				sortable: false,
+				sortable: true,
 				value: 'id',
 				class: 'black--text',
 			},
@@ -130,19 +145,15 @@ export default {
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
-
 		deleteItem(item) {
-			this.deleteTipo(item.id);
 			this.editedIndex = this.desserts.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialogDelete = true;
 		},
-
 		deleteItemConfirm() {
 			this.desserts.splice(this.editedIndex, 1);
-			this.closeDelete();
+			this.deleteTipo(this.editedItem.id);
 		},
-
 		close() {
 			this.dialog = false;
 			this.$nextTick(() => {
@@ -150,7 +161,6 @@ export default {
 				this.editedIndex = -1;
 			});
 		},
-
 		closeDelete() {
 			this.dialogDelete = false;
 			this.$nextTick(() => {
@@ -168,20 +178,24 @@ export default {
 						tipoprueba: this.editedItem.tipoprueba,
 					}),
 				});
+				this.initialize();
 			} catch (error) {
 				console.log(error);
 			}
 		},
 		async updateTipo(item) {
 			try {
-				const data = await fetch(`https://api-tedw-covid.herokuapp.com/tipoPrueba/${item.id}`, {
-					method: 'PUT',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						id: this.editedItem.id,
-						tipoprueba: item.tipoprueba,
-					}),
-				});
+				const data = await fetch(
+					`https://api-tedw-covid.herokuapp.com/tipoPrueba/${item.id}`,
+					{
+						method: 'PUT',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							id: this.editedItem.id,
+							tipoprueba: item.tipoprueba,
+						}),
+					}
+				);
 			} catch (error) {
 				console.log(error);
 			}
@@ -194,6 +208,7 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
+			this.closeDelete();
 		},
 		save() {
 			if (this.editedIndex > -1) {

@@ -2,7 +2,6 @@
 	<v-data-table
 		:headers="headers"
 		:items="desserts"
-		class="elevation-1"
 		:footer-props="{
 			showFirstLastPage: true,
 			firstIcon: 'mdi-arrow-collapse-left',
@@ -41,17 +40,17 @@
 										>
 											<template v-slot:activator="{ on, attrs }">
 												<v-text-field
-													v-model="editedItem.date"
+													v-model="editedItem.fecha"
 													label="Fecha"
 													persistent-hint
 													prepend-icon="mdi-calendar"
 													v-bind="attrs"
-													@blur="editedItem.date = parseDate(dateFormatted)"
+													@blur="editedItem.fecha = parseDate(dateFormatted)"
 													v-on="on"
 												></v-text-field>
 											</template>
 											<v-date-picker
-												v-model="editedItem.date"
+												v-model="editedItem.fecha"
 												no-title
 												@input="fecha = false"
 											></v-date-picker>
@@ -64,7 +63,7 @@
 											v-model="time2"
 											:close-on-content-click="false"
 											:nudge-right="40"
-											:return-value.sync="editedItem.time"
+											:return-value.sync="editedItem.hora"
 											transition="scale-transition"
 											offset-y
 											max-width="290px"
@@ -72,7 +71,7 @@
 										>
 											<template v-slot:activator="{ on, attrs }">
 												<v-text-field
-													v-model="editedItem.time"
+													v-model="editedItem.hora"
 													label="Horario"
 													prepend-icon="mdi-clock-time-four-outline"
 													readonly
@@ -82,9 +81,9 @@
 											</template>
 											<v-time-picker
 												v-if="time2"
-												v-model="editedItem.time"
+												v-model="editedItem.hora"
 												full-width
-												@click:minute="$refs.menu.save(editedItem.time)"
+												@click:minute="$refs.menu.save(editedItem.hora)"
 											></v-time-picker>
 										</v-menu>
 									</v-col>
@@ -94,6 +93,8 @@
 											:items="medicos"
 											v-model="editedItem.medico"
 											prepend-icon="mdi-doctor"
+											item-text="nombre"
+											item-value="id"
 											label="Médico"
 										></v-select>
 									</v-col>
@@ -145,9 +146,27 @@
 						</v-card-actions>
 					</v-card>
 				</v-dialog>
+				<v-dialog v-model="dialogDelete" max-width="550px">
+					<v-card>
+						<v-card-title class="text-h5">Estas seguro de eliminar la cita?</v-card-title>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+							<v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+							<v-spacer></v-spacer>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
 			</v-toolbar>
 		</template>
-
+		<template v-slot:item.actions="{ item }">
+			<v-icon medium @click="deleteItem(item)">
+				mdi-delete
+			</v-icon>
+			<v-icon medium class="mr-2" @click="getReceta(item)">
+				mdi-file-pdf
+			</v-icon>
+		</template>
 		<template v-slot:no-data>
 			<v-btn color="primary" @click="initialize">
 				Reset
@@ -157,16 +176,22 @@
 </template>
 
 <script>
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { mapState } from 'vuex';
 export default {
 	data: (vm) => ({
 		loader: null,
 		loading3: false,
 		time2: false,
-		dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
 		fecha: false,
-		medicos: ['Pancho', 'Jorge'],
-		modalidades: ['Presencial', 'Virtual'],
+		dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+		medicos: [],
+		receta: [],
+		modalidades: [
+			{ text: 'Presencial', value: 'presencial' },
+			{ text: 'Virtual', value: 'virtual' },
+		],
 		dialog: false,
 		dialogDelete: false,
 		headers: [
@@ -177,20 +202,31 @@ export default {
 				class: 'black--text',
 			},
 			{ text: 'Fecha', value: 'fecha', class: 'black--text' },
-			{ text: 'Horario', value: 'time', class: 'black--text' },
+			{ text: 'Horario', value: 'hora', class: 'black--text' },
 			{ text: 'Médico', value: 'medico', class: 'black--text' },
 			{ text: 'Modalidad', value: 'modalidad', class: 'black--text' },
 			{ text: 'Descripción', value: 'descripcion', class: 'black--text' },
 			{ text: 'Diagnóstico', value: 'sospechoso', class: 'black--text' },
+			{ text: 'Actions', value: 'actions', class: 'black--text', sortable: false },
 		],
 		desserts: [],
 		editedIndex: -1,
 		editedItem: {
 			id: 2,
 			fecha: new Date().toISOString().substr(0, 10),
-			time: null,
-			medico: '',
+			hora: new Date().toISOString().substr(11, 5),
+			medico: {},
 			modalidad: '',
+			sospechoso: true,
+			descripcion: '',
+		},
+		defaultItem: {
+			id: 2,
+			fecha: new Date().toISOString().substr(0, 10),
+			hora: new Date().toISOString().substr(11, 5),
+			medico: {},
+			modalidad: '',
+			sospechoso: true,
 			descripcion: '',
 		},
 	}),
@@ -198,7 +234,7 @@ export default {
 	computed: {
 		...mapState(['id']),
 		computedDateFormatted() {
-			return this.formatDate(this.editedItem.date);
+			return this.formatDate(this.editedItem.fecha);
 		},
 	},
 
@@ -206,8 +242,11 @@ export default {
 		dialog(val) {
 			val || this.close();
 		},
+		dialogDelete(val) {
+			val || this.closeDelete();
+		},
 		date(val) {
-			this.dateFormatted = this.formatDate(this.editedItem.date);
+			this.dateFormatted = this.formatDate(this.editedItem.fecha);
 		},
 		loader() {
 			const l = this.loader;
@@ -221,6 +260,7 @@ export default {
 
 	created() {
 		this.initialize();
+		this.getMedicos();
 	},
 
 	methods: {
@@ -231,11 +271,17 @@ export default {
 				);
 				const array = await data.json();
 				array.forEach(function(tupla, index) {
-					tupla.fecha = new Date(tupla.nacimiento).toISOString().substr(0, 10);
-					if (tupla.sospechoso) {
-						tupla.sospechoso = 'Con síntomas';
+					tupla.fecha = new Date(tupla.fecha).toISOString().substr(0, 10);
+
+					if (tupla.sospechoso != null) {
+						if (tupla.sospechoso) {
+							tupla.sospechoso = 'Con síntomas';
+						}
+						if (!tupla.sospechoso) {
+							tupla.sospechoso = 'Sin síntomas';
+						}
 					} else {
-						tupla.sospechoso = 'Sin síntomas';
+						tupla.sospechoso = 'En proceso...';
 					}
 				});
 				this.desserts = array;
@@ -245,11 +291,51 @@ export default {
 		},
 		async getMedicos() {
 			try {
+				const data = await fetch(`https://api-tedw-covid.herokuapp.com/usuario/tipo/Medico`);
+				const array = await data.json();
+				const arraydata = [];
+				array.forEach(function(tupla, index) {
+					arraydata.push({ nombre: tupla.nombre + ' ' + tupla.apellidos, id: tupla.id });
+				});
+				this.medicos = arraydata;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getReceta(item) {
+			try {
 				const data = await fetch(
-					`https://api-tedw-covid.herokuapp.com/usuario/citas/${this.id}`
+					`https://api-tedw-covid.herokuapp.com/receta/imprimir/${item.id}`
 				);
 				const array = await data.json();
-				this.desserts = array;
+				if (!Array.isArray(array) || array.length !== 0) {
+					array[0].fecha = new Date().toISOString().substr(0, 10);
+					var object = window.open(
+						'',
+						'_blank',
+						'width= 1100, height=620, left=10, top=50, menubar=yes, tooblar=no, location=no, scrollbars=yes'
+					);
+					object.document.open();
+					let html = `<!DOCTYPE html>
+						<html lang="en">
+						<head>
+							<title>Receta ${item.id}</title>
+						</head>
+						<body>
+							<p>Medico: ${array[0].medico}</p>
+							<p>Fecha: ${array[0].fecha}</p>`;
+					array.forEach((tupla) => {
+						/*console.log(tupla.medicamento);
+						console.log(tupla.dosis);*/
+						html = html.concat(
+							`<p>Medicamento: ${tupla.medicamento}</p><p>Dosis: ${tupla.dosis}</p>`
+						);
+					});
+					html = html.concat(`</body></html>`);
+					console.log(html);
+					object.document.write(html);
+					object.document.close();
+				}
 			} catch (error) {
 				console.log(error);
 			}
@@ -266,6 +352,15 @@ export default {
 			const [month, day, year] = date.split('/');
 			return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 		},
+		deleteItem(item) {
+			this.editedIndex = this.desserts.indexOf(item);
+			this.editedItem = Object.assign({}, item);
+			this.dialogDelete = true;
+		},
+		deleteItemConfirm() {
+			this.desserts.splice(this.editedIndex, 1);
+			this.deleteConsulta(this.editedItem.id);
+		},
 		close() {
 			this.dialog = false;
 			this.$nextTick(() => {
@@ -273,11 +368,49 @@ export default {
 				this.editedIndex = -1;
 			});
 		},
-
+		closeDelete() {
+			this.dialogDelete = false;
+			this.$nextTick(() => {
+				this.editedItem = Object.assign({}, this.defaultItem);
+				this.editedIndex = -1;
+			});
+		},
+		async saveConsulta() {
+			try {
+				const data = await fetch('https://api-tedw-covid.herokuapp.com/consulta', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						fecha: this.editedItem.fecha,
+						hora: this.editedItem.hora,
+						idmedico: this.editedItem.medico,
+						idpaciente: this.id,
+						tipocita: this.editedItem.modalidad,
+						sospechoso: null,
+						descripcion: this.editedItem.descripcion,
+					}),
+				});
+				this.initialize();
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async deleteConsulta(id) {
+			try {
+				const data = await fetch(`https://api-tedw-covid.herokuapp.com/consulta/${id}`, {
+					method: 'DELETE',
+				});
+			} catch (error) {
+				console.log(error);
+			}
+			this.closeDelete();
+		},
 		save() {
 			if (this.editedIndex > -1) {
 				Object.assign(this.desserts[this.editedIndex], this.editedItem);
 			} else {
+				console.log(this.editedItem);
+				this.saveConsulta();
 				this.desserts.push(this.editedItem);
 			}
 			this.close();
