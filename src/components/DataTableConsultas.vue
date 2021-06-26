@@ -309,6 +309,7 @@ export default {
 				);
 				const array = await data.json();
 				if (!Array.isArray(array) || array.length !== 0) {
+					console.log(array);
 					array[0].fecha = new Date().toISOString().substr(0, 10);
 					var object = window.open(
 						'',

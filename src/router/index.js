@@ -25,11 +25,6 @@ const routes = [
 		component: () => import('../views/Alumno/AdminConsultas.vue'),
 	},
 	{
-		path: '/homemedico',
-		name: 'HomeMedico',
-		component: () => import('../views/Medico/HomeMedico.vue'),
-	},
-	{
 		path: '/homeadmin',
 		name: 'HomeAdmin',
 		component: () => import('../views/Administrador/HomeAdmin.vue'),
@@ -63,6 +58,36 @@ const routes = [
 		path: '/pregunta',
 		name: 'Preguntas',
 		component: () => import('../views/Administrador/Preguntas.vue'),
+	},
+	{
+		path: '/homemedico',
+		name: 'HomeMedico',
+		component: () => import('../views/Medico/HomeMedico.vue'),
+	},
+	{
+		path: '/encuestas',
+		name: 'Encuestas',
+		component: () => import('../views/Medico/Encuestas.vue'),
+	},
+	{
+		path: '/respuesta/:id',
+		name: 'Respuestas',
+		component: () => import('../views/Medico/Respuestas.vue'),
+	},
+	{
+		path: '/pruebas',
+		name: 'Pruebas',
+		component: () => import('../views/Medico/Pruebas.vue'),
+	},
+	{
+		path: '/consultasmedico',
+		name: 'ConsultasMedico',
+		component: () => import('../views/Medico/Consultas.vue'),
+	},
+	{
+		path: '/diagnostico/:id_consulta/:id_paciente',
+		name: 'Diagnostico',
+		component: () => import('../views/Medico/Diagnostico.vue'),
 	},
 ];
 

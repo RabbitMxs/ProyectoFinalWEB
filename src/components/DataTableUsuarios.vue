@@ -360,6 +360,7 @@ export default {
 		},
 		async updateUsuario(item) {
 			try {
+				console.log(item);
 				const data = await fetch(`https://api-tedw-covid.herokuapp.com/usuario/${item.id}`, {
 					method: 'PUT',
 					headers: { 'Content-Type': 'application/json' },
@@ -370,8 +371,9 @@ export default {
 						clave: item.clave,
 						nacimiento: item.nacimiento,
 						direccion: item.direccion,
-						idarea: item.idarea,
-						idtipo: item.idtipo,
+						idarea: 1,
+						idtipo: 1,
+						estatus: item.estatus,
 					}),
 				});
 				this.initialize();

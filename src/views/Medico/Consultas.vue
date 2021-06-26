@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<header>
-			<NavAdmin />
+			<NavMedico />
 		</header>
 		<main>
 			<v-container fluid class="container-custom">
@@ -10,15 +10,14 @@
 						<v-card class="mt-2">
 							<div class="card-header">
 								<v-card-title class="white--text text-h5">
-									Preguntas
+									Consultas
 								</v-card-title>
 								<v-card-subtitle class="white--text text-subtitle-2">
-									Se muestran las preguntas existentes, podras dar de alta a nuevos asi como
-									eliminarlas o editarlas
+									Aqui podras ver las consultas que solicitaron los usuarios
 								</v-card-subtitle>
 							</div>
 							<v-card-text>
-								<DataTablePreguntas />
+								<DataTableConsultasMedico />
 							</v-card-text>
 						</v-card>
 					</v-col>
@@ -29,16 +28,17 @@
 </template>
 
 <script>
-import DataTablePreguntas from '../../components/DataTablePreguntas.vue';
-import NavAdmin from '../../components/NavAdmin.vue';
+import DataTableConsultasMedico from '../../components/DataTableConsultasMedico.vue';
+import NavMedico from '../../components/NavMedico.vue';
+
 export default {
-	components: { NavAdmin, DataTablePreguntas },
+	components: { NavMedico, DataTableConsultasMedico },
 };
 </script>
 
 <style scoped>
 .container-custom {
-	width: 60%;
+	width: 80%;
 }
 .card-header {
 	background-color: #428bca;

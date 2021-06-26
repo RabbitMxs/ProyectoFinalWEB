@@ -72,7 +72,7 @@ export default {
 				);
 				const array = await data.json();
 				array.forEach(function(tupla, index) {
-					tupla.fecha = new Date().toISOString().substr(0, 10);
+					tupla.fecha = new Date(tupla.fecha).toISOString().substr(0, 10);
 				});
 				this.desserts = array;
 			} catch (error) {
@@ -85,14 +85,15 @@ export default {
 					`https://api-tedw-covid.herokuapp.com/usuario/pruebaReporte/${item.id}`
 				);
 				const array = await data.json();
-				array[0].fecha = new Date().toISOString().substr(0, 10);
-				var object = window.open(
-					'',
-					'_blank',
-					'width= 1100, height=620, left=10, top=50, menubar=yes, tooblar=no, location=no, scrollbars=yes'
-				);
-				object.document.open();
-				object.document.write(`
+				if (!Array.isArray(array) || array.length !== 0) {
+					array[0].fecha = new Date().toISOString().substr(0, 10);
+					var object = window.open(
+						'',
+						'_blank',
+						'width= 1100, height=620, left=10, top=50, menubar=yes, tooblar=no, location=no, scrollbars=yes'
+					);
+					object.document.open();
+					object.document.write(`
 					<!DOCTYPE html>
 					<html lang="en">
 					<head>
@@ -106,6 +107,7 @@ export default {
 					</body>
 					</html>
 				`);
+				}
 				object.document.close();
 			} catch (error) {
 				console.log(error);
