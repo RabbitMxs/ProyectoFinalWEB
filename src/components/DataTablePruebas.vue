@@ -72,7 +72,7 @@ export default {
 				);
 				const array = await data.json();
 				array.forEach(function(tupla, index) {
-					tupla.fecha = new Date(tupla.fecha).toISOString().substr(0, 10);
+					tupla.fecha = new Date().toISOString().substr(0, 10);
 				});
 				this.desserts = array;
 			} catch (error) {
@@ -85,29 +85,61 @@ export default {
 					`https://api-tedw-covid.herokuapp.com/usuario/pruebaReporte/${item.id}`
 				);
 				const array = await data.json();
-				if (!Array.isArray(array) || array.length !== 0) {
-					array[0].fecha = new Date().toISOString().substr(0, 10);
-					var object = window.open(
-						'',
-						'_blank',
-						'width= 1100, height=620, left=10, top=50, menubar=yes, tooblar=no, location=no, scrollbars=yes'
-					);
-					object.document.open();
-					object.document.write(`
+				array[0].fecha = new Date().toISOString().substr(0, 10);
+				var object = window.open(
+					'',
+					'_blank',
+					'width= 1100, height=620, left=10, top=50, menubar=yes, tooblar=no, location=no, scrollbars=yes'
+				);
+				object.document.open();
+				object.document.write(`
 					<!DOCTYPE html>
 					<html lang="en">
 					<head>
-						<title>Prueba ${item.id}</title>
+						<title>PRUEBA ${item.id}</title>
+						<style type="text/css">   
+ 								.mayuscula { text-transform: uppercase;} 
+								.centro {text-align: center} 
+						</style>
 					</head>
 					<body>
-						<p>Nombre: ${array[0].nombre}</p>
-						<p>Fecha: ${array[0].fecha}</p>
-						<p>Tipo de prueba: ${array[0].tipoprueba}</p>
-						<p>Resultado: ${array[0].resultado}</p>
+						<div>
+							<div style="text-align: center; padding-top: 1%; ">
+								<font color="#010B56" size="8">
+									<label class="mayuscula" > ${array[0].tipoprueba} COVID-19</label><br>
+								</font>
+								<label style=" font-size: 22px ">PACIENTE: </label> <br>
+								<label style=" font-size: 20px ">${array[0].nombre}</label>
+							</div>
+								
+							<div style=" text-align:center;">
+							<br><br><br>
+								<table border="1" style="margin: 0 auto; width:60%;">
+									<tr>
+										<td height="45">FECHA</td>
+										<td height="45">TIPO DE PRUEBA</td>
+										<td height="45">RESULTADO</td>
+									</tr>
+									<tr>
+										<td height="40">${array[0].fecha}</td>
+										<td height="40">${array[0].tipoprueba}</td>
+										<td height="40"><b class="mayuscula"> ${array[0].resultado} </b></td>
+									</tr>
+								</table>
+							</div>
+							<div style="text-align: center; margin: 50px; padding-top: 10%; ">
+							    <hr>
+								<font color="#ada5a3" >
+								    <label>SERVICIOS MEDICOS</label><br>
+									<label>TECNOLÓGICO NACIONAL DE MÉXICO EN Celaya</label><br>
+									<label>Av. Tecnológico. Celaya, Gto. México</label><br>
+									<label >Telefono:  01 (461)61 17575 </label>
+								</font>
+							</div>
+						<div>
 					</body>
 					</html>
 				`);
-				}
 				object.document.close();
 			} catch (error) {
 				console.log(error);

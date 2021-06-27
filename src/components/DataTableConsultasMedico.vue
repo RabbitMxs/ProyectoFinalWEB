@@ -77,7 +77,7 @@ export default {
 				);
 				const array = await data.json();
 				array.forEach((element) => {
-					element.fecha = new Date().toISOString().substr(0, 10);
+					element.fecha = new Date(element.fecha).toISOString().substr(0, 10);
 					if (element.estatus) {
 						element.estatus = 'Atendida';
 					} else {

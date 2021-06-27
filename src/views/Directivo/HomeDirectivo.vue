@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<header>
-			<NavAdmin />
+			<NavDirectivo />
 		</header>
 		<main class="d-flex justify-center mx-auto col">
 			<v-container fluid class="container-custom">
@@ -50,59 +50,11 @@
 				<v-row class="mt-5" cols="12" align="center" no-gutters justify="center">
 					<v-col align="center" no-gutters justify="center">
 						<v-container style="width: 100%">
-							<v-row>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Usuarios"
-									link="usuario"
-									image="mdi-account-group"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Departamentos"
-									link="departamento"
-									image="mdi-bank"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Tipo de Usuarios"
-									link="tipoUsuario"
-									image="mdi-book-account"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Tipos de Pruebas"
-									link="tipoPrueba"
-									image="mdi-test-tube"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Medicamentos"
-									link="medicamento"
-									image="mdi-pill"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Preguntas"
-									link="pregunta"
-									image="mdi-clipboard-list"
-									tag="button"
-									width="100%"
-								/>
+							<v-row class="mb-10 ">
 								<BtnReporte
 									class="iconApp mb-10"
 									texto="Reporte Casos detectados en la institución"
-									link="reportes/admin/casosdetectados"
+									link="reportes/directivo/casosdetectados"
 									image="mdi-file-chart"
 									tag="button"
 									width="100%"
@@ -110,7 +62,7 @@
 								<BtnReporte
 									class="iconApp mb-10"
 									texto="Reporte casos en estudiantes/personal"
-									link="reportes/admin/casoscarreradepto"
+									link="reportes/directivo/casoscarreradepto"
 									image="mdi-file-chart"
 									tag="button"
 									width="100%"
@@ -118,7 +70,7 @@
 								<BtnReporte
 									class="iconApp mb-10"
 									texto="Reporte Carrera / Departamento"
-									link="reportes/admin/casoscarreradeptoseparados"
+									link="reportes/directivo/casoscarreradeptoseparados"
 									image="mdi-file-chart"
 									tag="button"
 									width="100%"
@@ -126,7 +78,7 @@
 								<BtnReporte
 									class="iconApp mb-10"
 									texto="Reporte Encuestas Aplicadas"
-									link="reportes/admin/encuestasaplicadas"
+									link="reportes/directivo/encuestasaplicadas"
 									image="mdi-file-chart"
 									tag="button"
 									width="100%"
@@ -134,7 +86,7 @@
 								<BtnReporte
 									class="iconApp mb-10"
 									texto="Reporte Consultas Atendidas"
-									link="reportes/admin/consultasatentidas"
+									link="reportes/directivo/consultasatentidas"
 									image="mdi-file-chart"
 									tag="button"
 									width="100%"
@@ -149,13 +101,13 @@
 </template>
 
 <script>
-import NavAdmin from '../../components/NavAdmin.vue';
+import NavDirectivo from '../../components/NavDirectivo.vue';
 import { mapState } from 'vuex';
 import BtnReporte from '../../components/BtnReporte.vue';
 
 export default {
-	name: 'HomeAdmin',
-	components: { NavAdmin, BtnReporte },
+	name: 'Homedirectivo',
+	components: { NavDirectivo, BtnReporte },
 	data() {
 		return {
 			alumno: {},

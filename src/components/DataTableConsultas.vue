@@ -309,30 +309,62 @@ export default {
 				);
 				const array = await data.json();
 				if (!Array.isArray(array) || array.length !== 0) {
-					console.log(array);
 					array[0].fecha = new Date().toISOString().substr(0, 10);
 					var object = window.open(
 						'',
 						'_blank',
-						'width= 1100, height=620, left=10, top=50, menubar=yes, tooblar=no, location=no, scrollbars=yes'
+						'width= 1000, height=600, left=10, top=50, menubar=yes, tooblar=no, location=no, scrollbars=yes'
 					);
 					object.document.open();
 					let html = `<!DOCTYPE html>
 						<html lang="en">
 						<head>
-							<title>Receta ${item.id}</title>
+							<title>RECETA ${item.id}</title>
+ 							 <style type="text/css">   
+ 								.mayuscula { text-transform: uppercase;}  
+								 .tamano{font-size: 25px; }
+								 .color{font-color: #011186;}
+								 .image-fondo { background-image: url("../assets/receta.png"); }
+							</style>
 						</head>
-						<body>
-							<p>Medico: ${array[0].medico}</p>
-							<p>Fecha: ${array[0].fecha}</p>`;
+					<body>
+						<div style="padding: 25px; " background="receta.png" class="image-fondo">
+						   <div  style="text-align: center; ">
+							    <font color="#010B56">
+									<label class="mayuscula" style=" font-size: 40px;">DR. ${array[0].medico}</label><br>
+								    <label style=" font-size: 20px;">MÉDICO GENERAL</label><br><br><br>
+								</font>
+								
+							</div>
+							<div>
+								<font>
+								<label style=" font-size: 18px">FECHA DE CONSULTA:</label><br>
+								<label style=" font-size: 18px"> ${array[0].fecha}</label><br><br>
+								<label style=" font-size: 18px">MEDICAMENTOS:</label>
+							</div>`;
 					array.forEach((tupla) => {
-						/*console.log(tupla.medicamento);
-						console.log(tupla.dosis);*/
 						html = html.concat(
-							`<p>Medicamento: ${tupla.medicamento}</p><p>Dosis: ${tupla.dosis}</p>`
+							`<div>
+									<ul>
+										<li style=" font-size: 15px" > ${tupla.medicamento} </li>
+										<label style=" font-size: 15px">Dosis: ${tupla.dosis}</label>
+									</ul>
+								</div>`
 						);
 					});
-					html = html.concat(`</body></html>`);
+					html = html.concat(`
+  							</font>
+							<div style="text-align: center; margin: 50px;">
+							    <hr>
+								<font color="#ada5a3" >
+								    <label>SERVICIOS MEDICOS</label><br>
+									<label>TECNOLÓGICO NACIONAL DE MÉXICO EN Celaya</label><br>
+									<label>Av. Tecnológico. Celaya, Gto. México</label><br>
+									<label >Telefono:  01 (461)61 17575 </label>
+								</font>
+							</div>
+						</div>	
+					</body></html>`);
 					console.log(html);
 					object.document.write(html);
 					object.document.close();

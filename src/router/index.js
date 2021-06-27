@@ -89,6 +89,63 @@ const routes = [
 		name: 'Diagnostico',
 		component: () => import('../views/Medico/Diagnostico.vue'),
 	},
+	{
+		path: '/reportes/admin/casoscarreradepto',
+		name: 'CasosCarreraDepto',
+		component: () => import('../views/Administrador/VistasReporte/CasosCarreraDepto.vue'),
+	},
+	{
+		path: '/reportes/admin/casoscarreradeptoseparados',
+		name: 'CasosCarreraDeptoSeparados',
+		component: () =>
+			import('../views/Administrador/VistasReporte/CasosCarreraDeptoSeparados.vue'),
+	},
+	{
+		path: '/reportes/admin/encuestasaplicadas',
+		name: 'EncuestasAplicadas',
+		component: () => import('../views/Administrador/VistasReporte/EncuestasAplicadas.vue'),
+	},
+	{
+		path: '/reportes/admin/consultasatentidas',
+		name: 'ConsultasAtendidas',
+		component: () => import('../views/Administrador/VistasReporte/ConsultasAtendidas.vue'),
+	},
+	{
+		path: '/reportes/admin/casosdetectados',
+		name: 'CasosDetectados',
+		component: () => import('../views/Administrador/VistasReporte/CasosDetectados.vue'),
+	},
+	{
+		path: '/homedirectivo',
+		name: 'HomeDirectivo',
+		component: () => import('../views/Directivo/HomeDirectivo.vue'),
+	},
+
+	{
+		path: '/reportes/directivo/casoscarreradepto',
+		name: 'CasosCarreraDeptoDirectivo',
+		component: () => import('../views/Directivo/VistasReporte/CasosCarreraDepto.vue'),
+	},
+	{
+		path: '/reportes/directivo/casoscarreradeptoseparados',
+		name: 'CasosCarreraDeptoSeparadosDirectivo',
+		component: () => import('../views/Directivo/VistasReporte/CasosCarreraDeptoSeparados.vue'),
+	},
+	{
+		path: '/reportes/directivo/encuestasaplicadas',
+		name: 'EncuestasAplicadasDirectivo',
+		component: () => import('../views/Directivo/VistasReporte/EncuestasAplicadas.vue'),
+	},
+	{
+		path: '/reportes/directivo/consultasatentidas',
+		name: 'ConsultasAtendidasDirectivo',
+		component: () => import('../views/Directivo/VistasReporte/ConsultasAtendidas.vue'),
+	},
+	{
+		path: '/reportes/directivo/casosdetectados',
+		name: 'CasosDetectadosDirectivo',
+		component: () => import('../views/Directivo/VistasReporte/CasosDetectados.vue'),
+	},
 ];
 
 const router = new VueRouter({

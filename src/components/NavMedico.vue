@@ -60,27 +60,15 @@ export default {
 			opciones: [
 				{
 					id: 0,
-					nombre: 'Usuarios',
+					nombre: 'Encuestas',
 				},
 				{
 					id: 1,
-					nombre: 'Departamentos',
+					nombre: 'Pruebas aplicadas',
 				},
 				{
 					id: 2,
-					nombre: 'Tipo de Usuarios',
-				},
-				{
-					id: 3,
-					nombre: 'Tipo Prueba',
-				},
-				{
-					id: 4,
-					nombre: 'Medicamento',
-				},
-				{
-					id: 5,
-					nombre: 'Pregunta',
+					nombre: 'Consultas',
 				},
 			],
 		};
@@ -90,22 +78,13 @@ export default {
 			console.log(id);
 			switch (id) {
 				case 0:
-					this.$router.push('/usuario');
+					this.$router.push('/encuestas');
 					break;
 				case 1:
-					this.$router.push('/departamento');
+					this.$router.push('/pruebas');
 					break;
 				case 2:
-					this.$router.push('/tipousuario');
-					break;
-				case 3:
-					this.$router.push('/tipoprueba');
-					break;
-				case 4:
-					this.$router.push('/medicamento');
-					break;
-				case 5:
-					this.$router.push('/pregunta');
+					this.$router.push('/consultasmedico');
 					break;
 			}
 		},

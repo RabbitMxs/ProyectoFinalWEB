@@ -2,7 +2,7 @@
 	<div>
 		<v-app-bar color="#008a17" dark>
 			<v-app-bar-nav-icon>
-				<router-link to="/homeadmin">
+				<router-link to="/homedirectivo">
 					<v-img
 						alt="ITC Logo"
 						class="shrink mx-2"
@@ -17,24 +17,6 @@
 			<v-toolbar-title>Instituto Tecnológico de Celaya</v-toolbar-title>
 
 			<v-spacer></v-spacer>
-
-			<v-menu left bottom>
-				<template v-slot:activator="{ on, attrs }">
-					<v-btn icon v-bind="attrs" v-on="on">
-						<v-icon>mdi-archive</v-icon>
-					</v-btn>
-				</template>
-
-				<v-list>
-					<v-list-item
-						v-for="opcion in opciones"
-						:key="opcion.index"
-						@click="redireccionar(opcion.id)"
-					>
-						<v-list-item-title>{{ opcion.nombre }}</v-list-item-title>
-					</v-list-item>
-				</v-list>
-			</v-menu>
 
 			<v-menu left bottom>
 				<template v-slot:activator="{ on, attrs }">
@@ -75,32 +57,6 @@
 export default {
 	data() {
 		return {
-			opciones: [
-				{
-					id: 0,
-					nombre: 'Usuarios',
-				},
-				{
-					id: 1,
-					nombre: 'Departamentos',
-				},
-				{
-					id: 2,
-					nombre: 'Tipo de Usuarios',
-				},
-				{
-					id: 3,
-					nombre: 'Tipo Prueba',
-				},
-				{
-					id: 4,
-					nombre: 'Medicamento',
-				},
-				{
-					id: 5,
-					nombre: 'Pregunta',
-				},
-			],
 			reportes: [
 				{
 					id: 0,
@@ -130,19 +86,19 @@ export default {
 			console.log(id);
 			switch (id) {
 				case 0:
-					this.$router.push('/reportes/admin/casosdetectados');
+					this.$router.push('/reportes/directivo/casosdetectados');
 					break;
 				case 1:
-					this.$router.push('/reportes/admin/casoscarreradepto');
+					this.$router.push('/reportes/directivo/casoscarreradepto');
 					break;
 				case 2:
-					this.$router.push('/reportes/admin/casoscarreradeptoseparados');
+					this.$router.push('/reportes/directivo/casoscarreradeptoseparados');
 					break;
 				case 3:
-					this.$router.push('/reportes/admin/encuestasaplicadas');
+					this.$router.push('/reportes/directivo/encuestasaplicadas');
 					break;
 				case 4:
-					this.$router.push('/reportes/admin/consultasatentidas');
+					this.$router.push('/reportes/directivo/consultasatentidas');
 					break;
 			}
 		},
