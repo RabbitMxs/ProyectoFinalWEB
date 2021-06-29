@@ -24,7 +24,7 @@
 											{{ list_preguntas[index].pregunta }}
 										</p>
 										<v-container class="d-flex justify-center align-center ">
-											<v-radio-group :v-model="preguntas[index].respuesta" row>
+											<v-radio-group v-model="preguntas[index].respuesta" row>
 												<v-radio label="Si" value="Si"></v-radio>
 												<v-radio label="No" value="No"></v-radio>
 											</v-radio-group>
@@ -37,7 +37,7 @@
 									<v-textarea
 										outlined
 										class="text-body-1 font-weight-regular"
-										:v-model="preguntas[0][index]"
+										v-model="preguntas[index].respuesta"
 										:label="list_preguntas[index].pregunta"
 									></v-textarea>
 								</div>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import BtnAzul from '../../components/BtnAzul.vue';
 import BtnRojo from '../../components/BtnRojo.vue';
 import Pregunta from '../../components/Pregunta.vue';
@@ -81,22 +82,40 @@ export default {
 				const array = await data.json();
 				array.forEach((element) => {
 					this.list.push(this.count);
-					this.preguntas.push({ id_pregunta: element.id, respuesta: '' });
+					this.preguntas.push({ id_pregunta: element.id, respuesta: null });
 					this.count++;
 				});
 				this.list_preguntas = array;
-				console.log(this.preguntas);
-				console.log(this.list);
 			} catch (error) {
 				console.log(error);
 			}
 		},
-		enviar() {
-			console.log(this.preguntas);
+		async enviar() {
+			try {
+				//if (this.preguntas[0] !== '' && this.preguntas[1] !== '') {
+				const data = await fetch(`https://api-tedw-covid.herokuapp.com/encuestaRegistro`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						id_modalidad: 1,
+						fecha: new Date().toISOString().substr(0, 10),
+						id_user: this.id,
+						preguntas: this.preguntas,
+					}),
+				});
+				const array = await data.json();
+				console.log(array);
+				//}
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	},
 	created() {
 		this.obtenerPreguntas();
+	},
+	computed: {
+		...mapState(['id']),
 	},
 };
 </script>

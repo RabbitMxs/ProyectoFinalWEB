@@ -5,11 +5,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		id: 3,
+		id: 0,
 	},
 	mutations: {
-		cambiarId(state, payload) {
-			state.id = payload;
+		cambiarId(state, value) {
+			state.id = value;
 		},
 	},
 	actions: {

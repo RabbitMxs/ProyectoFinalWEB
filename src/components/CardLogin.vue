@@ -28,7 +28,7 @@
 						prepend-inner-icon="mdi-lock"
 						@click:append="show1 = !show1"
 					></v-text-field>
-					<v-btn depressed color="primary" @click="login()">
+					<v-btn depressed color="primary" @click="loginView()">
 						Aceptar
 					</v-btn>
 				</v-col>
@@ -57,7 +57,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['login']),
-		async login() {
+		async loginView() {
 			if (this.username != '' && this.password != '') {
 				try {
 					const data = await fetch('https://api-tedw-covid.herokuapp.com/usuario/login', {
@@ -66,10 +66,13 @@ export default {
 						body: JSON.stringify({ email: this.username, password: this.password }),
 					});
 					const array = await data.json();
-					//console.log(array);
-					this.login(array.id);
-					//console.log(this.id);
-					this.$router.push('/homeuser');
+					if (array.length != 0) {
+						this.login(array[0].id);
+						const tipo = array[0].tipo;
+						if (tipo === 'Estudiante') {
+							this.$router.push('/homeuser');
+						}
+					}
 				} catch (error) {
 					console.log(error);
 				}
