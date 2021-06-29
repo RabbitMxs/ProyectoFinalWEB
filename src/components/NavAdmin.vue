@@ -47,7 +47,7 @@
 					<v-list-item
 						v-for="reporte in reportes"
 						:key="reporte.index"
-						@click="redireccionar(reporte.id)"
+						@click="redireccionarReportes(reporte.id)"
 					>
 						<v-list-item-title>{{ reporte.nombre }}</v-list-item-title>
 					</v-list-item>
@@ -127,6 +127,29 @@ export default {
 	},
 	methods: {
 		redireccionar(id) {
+			console.log(id);
+			switch (id) {
+				case 0:
+					this.$router.push('usuario');
+					break;
+				case 1:
+					this.$router.push('/departamento');
+					break;
+				case 2:
+					this.$router.push('/tipoUsuario');
+					break;
+				case 3:
+					this.$router.push('/tipoPrueba');
+					break;
+				case 4:
+					this.$router.push('/medicamento');
+					break;
+				case 5:
+					this.$router.push('/pregunta');
+					break;
+			}
+		},
+		redireccionarReportes(id) {
 			console.log(id);
 			switch (id) {
 				case 0:

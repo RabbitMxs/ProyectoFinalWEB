@@ -72,6 +72,18 @@ export default {
 						if (tipo === 'Estudiante') {
 							this.$router.push('/homeuser');
 						}
+						if (tipo === 'Medico') {
+							this.$router.push('/homemedico');
+						}
+						if (tipo === 'Profesor') {
+							this.$router.push('/homeuser');
+						}
+						if (tipo === 'Administrador') {
+							this.$router.push('/homeadmin');
+						}
+						if (tipo === 'Personal Directivo') {
+							this.$router.push('/homedirectivo');
+						}
 					}
 				} catch (error) {
 					console.log(error);
