@@ -17,24 +17,38 @@
 					</div>
 					<v-card-text>
 						<v-form>
-							<div v-for="pregunta in preguntas" :key="pregunta.id">
-								<Pregunta
-									:name="`idPregunta${pregunta.id}`"
-									:pregunta="pregunta.pregunta"
-									v-if="pregunta.id !== preguntas.length"
-								/>
+							<div v-for="index in list" :key="index.id">
+								<div v-if="index !== list.length - 1">
+									<div class="wrapper mx-auto">
+										<p class="my-auto text-start black--text text-body-1 font-weight-regular">
+											{{ list_preguntas[index].pregunta }}
+										</p>
+										<v-container class="d-flex justify-center align-center ">
+											<v-radio-group :v-model="preguntas[index].respuesta" row>
+												<v-radio label="Si" value="Si"></v-radio>
+												<v-radio label="No" value="No"></v-radio>
+											</v-radio-group>
+										</v-container>
+									</div>
+									<v-divider></v-divider>
+								</div>
+
 								<div class="form-floating mt-2" v-else>
 									<v-textarea
 										outlined
 										class="text-body-1 font-weight-regular"
-										:name="`idPregunta${pregunta.id}`"
-										:label="pregunta.pregunta"
+										:v-model="preguntas[0][index]"
+										:label="list_preguntas[index].pregunta"
 									></v-textarea>
 								</div>
 							</div>
 							<div>
-								<BtnAzul class="me-5" texto="Enviar" link="" />
-								<BtnRojo texto="Cancelar" link="homeuser" />
+								<v-btn color="primary" dark class="mb-2 me-2" @click="enviar()">
+									Enviar
+								</v-btn>
+								<v-btn color="error" dark class="mb-2">
+									Cancelar
+								</v-btn>
 							</div>
 						</v-form>
 					</v-card-text>
@@ -54,7 +68,10 @@ export default {
 	components: { NavAlumno, BtnAzul, Pregunta, BtnRojo },
 	data() {
 		return {
+			list: [],
 			preguntas: [],
+			count: 0,
+			list_preguntas: [],
 		};
 	},
 	methods: {
@@ -62,10 +79,20 @@ export default {
 			try {
 				const data = await fetch(`https://api-tedw-covid.herokuapp.com/pregunta`);
 				const array = await data.json();
-				this.preguntas = array;
+				array.forEach((element) => {
+					this.list.push(this.count);
+					this.preguntas.push({ id_pregunta: element.id, respuesta: '' });
+					this.count++;
+				});
+				this.list_preguntas = array;
+				console.log(this.preguntas);
+				console.log(this.list);
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		enviar() {
+			console.log(this.preguntas);
 		},
 	},
 	created() {
@@ -81,5 +108,11 @@ export default {
 }
 .card-header {
 	background-color: #428bca;
+}
+.wrapper {
+	display: grid;
+	grid-template-columns: 2fr 200px;
+	grid-gap: 10px;
+	grid-auto-rows: minmax(auto, 50px);
 }
 </style>

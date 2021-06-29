@@ -41,7 +41,7 @@
 
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" text @click="close">
+							<v-btn color="primary" text @click="close">
 								Cancel
 							</v-btn>
 							<v-btn color="blue darken-1" text @click="save">
@@ -86,7 +86,6 @@
 <script>
 export default {
 	data: (vm) => ({
-		nacimiento: false,
 		dialog: false,
 		dialogDelete: false,
 		headers: [
@@ -108,7 +107,7 @@ export default {
 		},
 		defaultItem: {
 			id: '',
-			tipo: '',
+			tipo: 'hehe',
 		},
 	}),
 

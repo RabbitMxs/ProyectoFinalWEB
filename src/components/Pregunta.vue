@@ -6,8 +6,8 @@
 			</p>
 			<v-container class="d-flex justify-center align-center ">
 				<v-radio-group :v-model="name" row>
-					<v-radio label="Si" value="S"></v-radio>
-					<v-radio label="No" value="N"></v-radio>
+					<v-radio label="Si" value="Si"></v-radio>
+					<v-radio label="No" value="No"></v-radio>
 				</v-radio-group>
 			</v-container>
 		</div>

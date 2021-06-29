@@ -371,8 +371,8 @@ export default {
 						clave: item.clave,
 						nacimiento: item.nacimiento,
 						direccion: item.direccion,
-						idarea: 1,
-						idtipo: 1,
+						idarea: item.idarea,
+						idtipo: item.idtipo,
 						estatus: item.estatus,
 					}),
 				});
