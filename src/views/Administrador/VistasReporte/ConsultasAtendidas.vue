@@ -10,7 +10,7 @@
 						<v-card class="mt-2">
 							<div class="card-header">
 								<v-card-title class="white--text text-h5">
-									Encuestas aplicadas
+									Encuestas atendidas
 								</v-card-title>
 								<v-card-subtitle class="white--text text-subtitle-2">
 									Se muestra el número de encuestas aplicadas en la institución

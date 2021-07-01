@@ -41,6 +41,7 @@
 import { mapState } from 'vuex';
 export default {
 	data: () => ({
+		id: localStorage.getItem('Id'),
 		dialog: false,
 		headers: [
 			{

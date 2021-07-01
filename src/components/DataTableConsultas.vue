@@ -181,6 +181,7 @@ import jsPDF from 'jspdf';
 import { mapState } from 'vuex';
 export default {
 	data: (vm) => ({
+		id: localStorage.getItem('Id'),
 		loader: null,
 		loading3: false,
 		time2: false,
@@ -430,9 +431,13 @@ export default {
 		},
 		async deleteConsulta(id) {
 			try {
-				const data = await fetch(`https://api-tedw-covid.herokuapp.com/consulta/${id}`, {
-					method: 'DELETE',
-				});
+				const id_usuario = id;
+				const data = await fetch(
+					`https://api-tedw-covid.herokuapp.com/consulta/${id_usuario}`,
+					{
+						method: 'DELETE',
+					}
+				);
 			} catch (error) {
 				console.log(error);
 			}

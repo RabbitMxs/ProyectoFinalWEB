@@ -34,6 +34,7 @@ import { mapState } from 'vuex';
 export default {
 	name: 'DataTablePruebas',
 	data: () => ({
+		id: localStorage.getItem('Id'),
 		desserts: [],
 		headers: [
 			{

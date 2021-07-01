@@ -46,7 +46,7 @@
 								<v-btn color="primary" dark class="mb-2 me-2" @click="enviar()">
 									Enviar
 								</v-btn>
-								<v-btn color="error" dark class="mb-2">
+								<v-btn color="error" dark class="mb-2" @click="regresa()">
 									Cancelar
 								</v-btn>
 							</div>
@@ -69,6 +69,7 @@ export default {
 	components: { NavAlumno, BtnAzul, Pregunta, BtnRojo },
 	data() {
 		return {
+			id: localStorage.getItem('Id'),
 			list: [],
 			preguntas: [],
 			count: 0,
@@ -105,10 +106,13 @@ export default {
 				});
 				const array = await data.json();
 				console.log(array);
-				//}
+				this.regresa();
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		regresa() {
+			this.$router.push('/homeuser');
 		},
 	},
 	created() {

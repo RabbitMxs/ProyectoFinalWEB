@@ -68,6 +68,8 @@ export default {
 					const array = await data.json();
 					if (array.length != 0) {
 						this.login(array[0].id);
+						//
+						localStorage.setItem('Id', array[0].id);
 						const tipo = array[0].tipo;
 						if (tipo === 'Estudiante') {
 							this.$router.push('/homeuser');

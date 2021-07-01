@@ -39,7 +39,7 @@
 											Especialidad: <span class="font-weight-regular">{{ especialidad }}</span>
 										</p>
 										<p class="mb-2  text-wrap font-weight-bold black--text">
-											Estatus: <span class="font-weight-regular">{{ estatus }}</span>
+											Rol: <span class="font-weight-regular">{{ estatus }}</span>
 										</p>
 									</div>
 								</div>
@@ -110,6 +110,7 @@ export default {
 	components: { NavDirectivo, BtnReporte },
 	data() {
 		return {
+			id: localStorage.getItem('Id'),
 			alumno: {},
 			especialidad: '',
 			estatus: '',
