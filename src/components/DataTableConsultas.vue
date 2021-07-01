@@ -117,19 +117,15 @@
 										></v-textarea>
 									</v-col>
 
-									<v-col cols="12" sm="6">
-										<v-btn
-											:loading="loading3"
-											:disabled="loading3"
-											color="blue-grey"
-											class="ma-2 white--text"
-											@click="loader = 'loading3'"
-										>
-											Upload
-											<v-icon right dark>
-												mdi-cloud-upload
-											</v-icon>
-										</v-btn>
+									<v-col cols="12">
+										<template>
+											<v-file-input
+												accept="image/*"
+												label="Evidencia"
+												ref="myfile"
+												v-model="files"
+											></v-file-input>
+										</template>
 									</v-col>
 								</v-row>
 							</v-container>
@@ -182,6 +178,7 @@ import { mapState } from 'vuex';
 export default {
 	data: (vm) => ({
 		id: localStorage.getItem('Id'),
+		files: null,
 		loader: null,
 		loading3: false,
 		time2: false,
@@ -429,6 +426,33 @@ export default {
 				console.log(error);
 			}
 		},
+		async upload() {
+			try {
+				var formdata = new FormData();
+				formdata.append('fecha', this.editedItem.fecha);
+				formdata.append('descripcion', this.editedItem.descripcion);
+				formdata.append('tipocita', this.editedItem.modalidad);
+				formdata.append('idmedico', this.editedItem.medico);
+				formdata.append('idpaciente', this.id);
+				formdata.append('hora', this.editedItem.hora);
+				formdata.append('upload', this.files, 'Frame 1(1).png');
+
+				var requestOptions = {
+					method: 'POST',
+					body: formdata,
+					redirect: 'follow',
+				};
+
+				fetch('https://api-tedw-covid.herokuapp.com/uploadfile', requestOptions)
+					.then((response) => response.text())
+					.then((result) => console.log(result))
+					.catch((error) => console.log('error', error));
+
+				this.initialize();
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		async deleteConsulta(id) {
 			try {
 				const id_usuario = id;
@@ -448,7 +472,9 @@ export default {
 				Object.assign(this.desserts[this.editedIndex], this.editedItem);
 			} else {
 				console.log(this.editedItem);
-				this.saveConsulta();
+				console.log(this.files);
+				this.upload();
+				//this.saveConsulta();
 				this.desserts.push(this.editedItem);
 			}
 			this.close();

@@ -3,7 +3,7 @@
 		<v-card class="mt-2" width="400px" height="325px" elevation="24">
 			<v-toolbar color="#428bca" dark dense flat>
 				<v-toolbar-title class="title mx-auto">
-					Sistema De Alertar COVID-19
+					Sistema De Control COVID-19
 				</v-toolbar-title>
 			</v-toolbar>
 			<v-card-text>
@@ -22,7 +22,7 @@
 						:type="show1 ? 'text' : 'password'"
 						name="password"
 						label="Contraseña"
-						hint="At least 8 characters"
+						hint="At least 4 characters"
 						counter
 						outlined
 						prepend-inner-icon="mdi-lock"
@@ -49,7 +49,7 @@ export default {
 			password: '',
 			rules: {
 				required: (value) => !!value || 'Required.',
-				min: (v) => v.length >= 5 || 'Min 8 characters',
+				min: (v) => v.length >= 4 || 'Min 8 characters',
 				emailMatch: () => "The email and password you entered don't match",
 			},
 			username: '',

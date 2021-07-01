@@ -51,46 +51,31 @@
 					<v-col align="center" no-gutters justify="center">
 						<v-container style="width: 100%">
 							<v-row class="mb-10 ">
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Reporte Casos detectados en la institución"
-									link="reportes/directivo/casosdetectados"
-									image="mdi-file-chart"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Reporte casos en estudiantes/personal"
-									link="reportes/directivo/casoscarreradepto"
-									image="mdi-file-chart"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Reporte Carrera / Departamento"
-									link="reportes/directivo/casoscarreradeptoseparados"
-									image="mdi-file-chart"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Reporte Encuestas Aplicadas"
-									link="reportes/directivo/encuestasaplicadas"
-									image="mdi-file-chart"
-									tag="button"
-									width="100%"
-								/>
-								<BtnReporte
-									class="iconApp mb-10"
-									texto="Reporte Consultas Atendidas"
-									link="reportes/directivo/consultasatentidas"
-									image="mdi-file-chart"
-									tag="button"
-									width="100%"
-								/>
+								<v-col cols="6" class="my-auto">
+									<p class="font-weight-black text-h5">
+										<v-icon class="me-2">mdi-calendar</v-icon>
+										Primer caso detectado
+									</p>
+									<p class="font-weight-medium text-h5">
+										{{ primerCasoDetectado.fecha }}
+									</p>
+									<p class="font-weight-black text-h5">
+										<v-icon class="me-2">mdi-calendar</v-icon>
+										Último caso detectado
+									</p>
+									<p class="font-weight-medium text-h5">
+										{{ ultimoCasoDetectado.fecha }}
+									</p>
+								</v-col>
+								<v-col cols="6"> <DataTableDashboardHistorial /> </v-col>
+							</v-row>
+							<v-row class="mb-10 ">
+								<v-col cols="6">
+									<GraficaDashboarPruebas />
+								</v-col>
+								<v-col cols="6">
+									<GraficaDashboarPruebas2 />
+								</v-col>
 							</v-row>
 						</v-container>
 					</v-col>
@@ -104,16 +89,27 @@
 import NavDirectivo from '../../components/NavDirectivo.vue';
 import { mapState } from 'vuex';
 import BtnReporte from '../../components/BtnReporte.vue';
+import GraficaDashboarPruebas from '../../components/Reportes/GraficaDashboarPruebas.vue';
+import GraficaDashboarPruebas2 from '../../components/Reportes/GraficaDashboarPruebas2.vue';
+import DataTableDashboardHistorial from '../../components/Reportes/DataTableDashboardHistorial.vue';
 
 export default {
 	name: 'Homedirectivo',
-	components: { NavDirectivo, BtnReporte },
+	components: {
+		NavDirectivo,
+		BtnReporte,
+		GraficaDashboarPruebas,
+		GraficaDashboarPruebas2,
+		DataTableDashboardHistorial,
+	},
 	data() {
 		return {
 			id: localStorage.getItem('Id'),
 			alumno: {},
 			especialidad: '',
 			estatus: '',
+			primerCasoDetectado: {},
+			ultimoCasoDetectado: {},
 		};
 	},
 	methods: {
@@ -125,6 +121,25 @@ export default {
 				this.alumno.email = this.alumno.email.substr(0, 8);
 				this.getArea();
 				this.getTipo();
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getCasos() {
+			try {
+				const data = await fetch(
+					`https://api-tedw-covid.herokuapp.com/dashboardPrimeroUltimo`
+				);
+				const array = await data.json();
+
+				this.primerCasoDetectado = array.primerCasoDetectado;
+				this.ultimoCasoDetectado = array.ultimoCasoDetectado;
+				this.primerCasoDetectado.fecha = new Date(this.primerCasoDetectado.fecha)
+					.toISOString()
+					.substr(0, 10);
+				this.ultimoCasoDetectado.fecha = new Date(this.ultimoCasoDetectado.fecha)
+					.toISOString()
+					.substr(0, 10);
 			} catch (error) {
 				console.log(error);
 			}
@@ -157,6 +172,7 @@ export default {
 	},
 	created() {
 		this.getAlumno();
+		this.getCasos();
 	},
 };
 </script>

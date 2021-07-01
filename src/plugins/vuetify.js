@@ -12,6 +12,7 @@ export default new Vuetify({
 				accent: '#8c9eff',
 				error: '#d9534f',
 				success: '#008a17',
+				bluegrey: '#607D8B',
 			},
 		},
 	},

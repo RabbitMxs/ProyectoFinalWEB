@@ -31,6 +31,11 @@
 										</v-col>
 									</v-row>
 									<v-row>
+										<v-btn color="bluegrey" class="white--text" :href="link" target="_blank">
+											Mostra evidencia
+										</v-btn>
+									</v-row>
+									<v-row>
 										<v-toolbar flat>
 											<v-toolbar-title>Diagnostico</v-toolbar-title>
 											<v-spacer></v-spacer>
@@ -127,6 +132,7 @@ export default {
 	data() {
 		return {
 			dialogDelete: false,
+			link: '',
 			consulta: {},
 			paciente: {},
 			diagnostico: '',
@@ -162,6 +168,18 @@ export default {
 				);
 				const array = await data.json();
 				this.consulta = array[0];
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getLink() {
+			try {
+				const data = await fetch(
+					`https://api-tedw-covid.herokuapp.com/getfiles/${this.$route.params.id_consulta}`
+				);
+				const array = await data.json();
+				console.log(array);
+				this.link = array[0].evidencia;
 			} catch (error) {
 				console.log(error);
 			}
@@ -320,6 +338,7 @@ export default {
 		this.getConsulta();
 		this.getMedicamentos();
 		this.getPrueba();
+		this.getLink();
 	},
 };
 </script>
